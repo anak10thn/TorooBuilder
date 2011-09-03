@@ -1,0 +1,64 @@
+#!/bin/bash
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#       
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#       
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
+#		created by	:ibnu yahya <ibnu.yahya@toroo.org>
+#				 indira cempakasari <indira@toroo.org>
+#		modify by	:<nama><email>
+# Perbaikan :
+# v1.0.2
+# - perbaikan variabel makepkg [25/8/2011]
+# - perbaikan variabel md5sum [25/8/2011]
+# - penambahan requiredbuilder [25/8/2011]
+# - penambahan variabel $EXTENSION [25/8/2011]
+
+APPNAME="glib" #nama paket
+VERSION="2.6.6" #versi paket
+ALIAS="iy" #nama
+EXTENSION="tar.bz2" #extensi source bisa di ganti
+TMP="/tmp"	
+SOURCEDIR="$TMP/$APPNAME-$VERSION"
+DESTDIR="$TMP/$APPNAME-$VERSION-binary"
+
+ARC=`uname -m`
+
+if [ $ARC == i486 ]
+then
+     LIBDIR="/usr/lib"
+elif [ $ARC == i686 ]
+then
+     LIBDIR="/usr/lib"
+elif [ $ARC == i386 ]
+then
+     LIBDIR="/usr/lib"
+elif [ $ARC == x86_64 ]
+then
+     LIBDIR="/usr/lib64"
+fi 
+
+mkdir -p $TMP/$APPNAME-$VERSION
+mkdir -p $TMP/$APPNAME-$VERSION-binary
+
+tar vxf $APPNAME-$VERSION.$EXTENSION -C $SOURCEDIR
+
+cd $SOURCEDIR/$APPNAME-$VERSION
+
+./configure --prefix=/usr --libdir=$LIBDIR --sysconfdir=/etc --localstatedir=/var --mandir=/usr/man --build=$ARC-toroo-linux && \
+make && \
+make install DESTDIR=$DESTDIR
+
+cd $DESTDIR
+/sbin/makepkg -l y -c n $TMP/$APPNAME-$VERSION-$ARC-$ALIAS-toroo.tlz
+md5sum $TMP/$APPNAME-$VERSION-$ARC-$ALIAS-toroo.tlz > $TMP/$APPNAME-$VERSION-$ARC-$ALIAS-toroo.md5
+requiredbuilder -z $TMP/$APPNAME-$VERSION-$ARC-$ALIAS-toroo.tlz > $TMP/$APPNAME-$VERSION-$ARC-$ALIAS-toroo.dep
