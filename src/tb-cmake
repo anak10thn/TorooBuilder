@@ -17,7 +17,6 @@
 #				 indira cempakasari <indira@toroo.org>
 #		modify by	:<nama><email>
 
-
 APPNAME="" #nama paket
 VERSION="" #versi paket
 ALIAS="" #nama
@@ -30,16 +29,19 @@ ARC=`uname -m`
 
 if [ $ARC == i486 ]
 then
+     SLKCFLAGS="-O2 -march=i486 -mtune=i686"
      LIBDIR="/usr/lib"
 elif [ $ARC == i686 ]
 then
-     LIBDIR="/usr/lib"
-elif [ $ARC == i386 ]
-then
+     SLKCFLAGS="-O2 -march=i686 -mtune=i686"
      LIBDIR="/usr/lib"
 elif [ $ARC == x86_64 ]
 then
+     SLKCFLAGS="-O2 -fPIC"
      LIBDIR="/usr/lib64"
+else
+     SLKCFLAGS="-O2"
+     LIBDIR=""
 fi 
 
 mkdir -p $TMP/$APPNAME-$VERSION
@@ -48,9 +50,16 @@ mkdir -p $TMP/$APPNAME-$VERSION-binary
 tar vxf $APPNAME-$VERSION.$EXTENSION -C $SOURCEDIR
 
 cd $SOURCEDIR/$APPNAME-$VERSION
-
-./configure --prefix=/usr --libdir=$LIBDIR --sysconfdir=/etc --localstatedir=/var --mandir=/usr/man --build=$ARC-toroo-linux && \
-make && \
+mkdir -p build
+cd build
+cmake \
+    -DCMAKE_C_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_CXX_FLAGS:STRING="$SLKCFLAGS" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_SUFFIX=$LIBDIR \
+    -DMAN_INSTALL_DIR=/usr/man \
+    -DCMAKE_BUILD_TYPE=Release ..
+make
 make install DESTDIR=$DESTDIR
 
 cd $DESTDIR

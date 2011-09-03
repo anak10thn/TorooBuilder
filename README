@@ -1,0 +1,18 @@
+Toroo Package Builder
+=====================
+TorooBuilder merupakan tools untuk mengkompilasi kode sumber program dan memaketkannya
+ke TLZ, TLZ merupakan ekstensi paket meneger Toroo GNU/Linux (sejak versi 3.0 AOI).
+
+CONTRIBUTOR
+===========
+- ibnu yahya <ibnu.yahya@toroo.org>
+- indira cempakasari <indira@toroo.org>
+
+CHANGELOG
+===========
+v1.0.2
+# perbaikan variabel makepkg - /src/tb - [25/8/2011]
+# perbaikan variabel md5sum - /src/tb - [25/8/2011]
+# penambahan requiredbuilder - /src/tb - [25/8/2011]
+# penambahan variabel $EXTENSION - /src/tb - [25/8/2011]
+# penambahan script builder CMAKE - /src/tb-cmake - [25/8/2011]
