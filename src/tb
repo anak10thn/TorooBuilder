@@ -21,7 +21,7 @@
 APPNAME="" #nama paket
 VERSION="" #versi paket
 ALIAS="" #nama
-EXTENSION="tar.bz2" #extensi source bisa di ganti
+EXTENSION="tar.gz" #extensi source bisa di ganti
 TMP="/tmp"	
 SOURCEDIR="$TMP/$APPNAME-$VERSION"
 DESTDIR="$TMP/$APPNAME-$VERSION-binary"
